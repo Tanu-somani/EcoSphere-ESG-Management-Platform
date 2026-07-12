@@ -1,0 +1,30 @@
+└── Department
+
+Environmental
+│
+├── Resource
+├── EmissionFactor
+├── CarbonTransaction
+└── EnvironmentalGoal
+
+Social
+│
+├── CSRActivity
+├── Participation   (references Odoo Employee)
+├── Challenge
+├── XPTransaction
+├── Badge
+├── EmployeeBadge
+└── Reward
+
+Governance
+│
+├── Policy
+├── Audit
+├── AuditFinding
+└── ComplianceIssue
+
+ESG
+│
+├── DepartmentScore
+└── OrganizationScore
