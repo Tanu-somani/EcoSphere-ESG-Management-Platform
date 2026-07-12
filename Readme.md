@@ -199,20 +199,70 @@ The ESG Score is displayed throughout the platform and forms the basis for repor
 
 ---
 
-# 🤖 AI Copilot
+# 🤖 AI Copilot (REST API & CLI Service)
 
-EcoSphere includes an AI Copilot to help management understand ESG data.
+EcoSphere includes a standalone, decoupled AI Copilot built using Python and Google's Gemini 3.5 Flash API to help management analyze ESG metrics. The AI does **not** perform calculations; instead, it acts as a reasoning layer over structured backend data.
 
-The AI does **not** perform calculations.
+### Features
+* **Interactive Chat Companion**: Pruned layouts optimized for live chat widgets.
+* **Grounded Responses**: Restricts analysis strictly to the provided context to prevent hallucinations.
+* **No Causal Assumptions**: Uses qualitative analyst language ("indicates", "suggests") to ensure reporting standards.
+* **FastAPI Server**: REST API endpoints for easy integration with frontends and external services.
 
-Instead, it analyzes processed backend data and provides natural language explanations.
+### API Architecture
+```text
+User Question
+      │
+      ▼
+   FastAPI (main.py) / CLI (app.py)
+      │
+      ▼
+Context Loader ◄───[Reads]─── Mock JSON Context (mock/ai_context.json)
+      │
+      ▼
+Prompt Builder ◄───[Reads]─── System Prompt Instructions
+      │
+      ▼
+ Gemini Client
+      │
+      ▼
+  Gemini API (Gemini 3.5 Flash Model)
+```
+
+### Installation & Run
+
+Navigate to the `eco_sphere_ai` directory and configure the environment:
+```bash
+cd eco_sphere_ai
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Create a `.env` file inside `eco_sphere_ai/`:
+```env
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+#### Run as a REST API Server (Uvicorn / FastAPI):
+```bash
+uvicorn main:app --port 8000 --reload
+```
+* **Swagger UI Docs**: Accessible at `http://localhost:8000/docs`.
+* **Health Check**: `GET http://localhost:8000/health`
+* **Chat Endpoint**: `POST http://localhost:8000/api/ai/chat` taking `{"question": "..."}`.
+
+#### Run as a CLI Application:
+```bash
+python3 app.py "What is our overall ESG score?"
+```
 
 ### Example Questions
-
-- Why did Manufacturing's ESG score decrease?
-- Give me today's ESG Summary.
-- How can we improve our ESG Score?
-- Which department requires immediate attention?
+* *What is our overall ESG score?*
+* *Explain Manufacturing department performance.*
+* *Compare Manufacturing with Logistics.*
+* *Which compliance issue is most critical?*
+* *Show delayed environmental goals.*
 
 ---
 
@@ -290,7 +340,7 @@ Reports can be filtered by:
 - Python
 - PostgreSQL
 - Blockchain (Audit Verification)
-- AI Copilot
+- AI Copilot (FastAPI / Gemini)
 - JavaScript
 - XML Views
 
@@ -312,6 +362,17 @@ Responsible for:
 
 ---
 
+## AI
+
+Responsible for:
+
+- ESG Copilot REST API
+- Grounded prompt engineering
+- Real-time department insights & recommendations
+- Exposing Uvicorn HTTP endpoints for frontend consumption
+
+---
+
 ## Frontend
 
 Responsible for:
@@ -322,17 +383,6 @@ Responsible for:
 - Charts
 - Reports
 - User Experience
-
----
-
-## AI
-
-Responsible for:
-
-- ESG Copilot
-- ESG Summary
-- Recommendations
-- Dashboard Insights
 
 ---
 
@@ -395,3 +445,9 @@ AI Insights
 ```
 
 Every feature in the platform ultimately contributes toward helping organizations become more sustainable and make better ESG decisions.
+
+---
+
+# 👥 Authors
+
+* **AI Lead & Solutions Architect**: *[Yashvi Kaushik]*
