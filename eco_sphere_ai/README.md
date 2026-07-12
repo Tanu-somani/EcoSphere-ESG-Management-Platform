@@ -13,13 +13,9 @@ eco_sphere_ai/
 ├── gemini_client.py      # Standalone API client for Gemini 3.5 Flash
 ├── context_router.py     # Classifies query intent and filters JSON blocks
 ├── context_loader.py     # Parses mock/ai_context.json for static context
-├── prompt_builder.py     # Compiles prompts by merging context and templates
-├── prompts/              # System instruction and prompt text templates
-│   ├── system_prompt.txt
-│   ├── dashboard_summary.txt
-│   ├── department_analysis.txt
-│   ├── recommendation.txt
-│   └── audit_summary.txt
+├── prompt_builder.py     # Wraps queries into structured Tasks with execution rules
+├── prompts/              # System instruction and prompt templates
+│   └── system_prompt.txt # Strict Data Analyst instructions and qualifiers
 ├── mock/
 │   └── ai_context.json   # Mock JSON containing mock ESG platform data
 ├── requirements.txt      # Python dependencies list
@@ -41,15 +37,15 @@ User Question
      ▼
 [2] ai_service.py (Orchestrator)
      │
-     ├──► [3] context_loader.py  ──► Loads full mock/ai_context.json
+     ├──► [3] context_loader.py  ──► Loads mock/ai_context.json
      │
      ├──► [4] context_router.py  ──► Filters JSON context based on intent
      │                                 (Dashboard / Carbon / Department / Audits)
      │
      ├──► [5] prompt_builder.py
      │         - Reads prompts/system_prompt.txt
-     │         - Reads specific prompts/*.txt
-     │         - Merges FILTERED JSON & question into template
+     │         - Wraps question into a structured Task (with strict rules)
+     │         - Merges FILTERED JSON context
      │
      └──► [6] gemini_client.py
                - Imports `google-genai` client
@@ -62,20 +58,34 @@ User Question
 
 ---
 
-## 3. Executive Response Schema
+## 3. Strict Data Analyst Persona & Rules
 
-Every answer returned by the AI Copilot strictly conforms to the following executive presentation format:
+To ensure reliable, objective, and audit-safe analysis, the Copilot behaves as a **Data Analyst** operating under strict guidelines:
 
-1. **📊 Executive Summary**: A high-impact 3-5 bullet point overview summarizing key metrics and risks.
-2. **Evidence & Analysis**: Direct comparisons utilizing exact numbers from the data payload (rendered in Markdown tables for multi-dimensional data).
-3. **Cross-reference Context**: Logical connections connecting emissions, scores, goals, and compliance issues.
-4. **✅ Recommendations**: Actionable suggestions referencing specific metrics, goal IDs, and target dates.
-5. **⚠️ Missing Information**: Transparency disclosure of any metrics or calculations not provided in the dataset to prevent hallucination.
-6. **Confidence Level**: A rating of **High | Medium | Low** with a checklist detailing exactly which context files were consumed to build the response.
+* **Strict Data Grounding**: Base all statements strictly on the JSON payload. If data is missing, the AI explicitly states it and refuses to speculate or generate metrics from memory.
+* **No Causal Claims**: The AI is prohibited from asserting causal connections (e.g., avoiding words like "causes", "results in", "therefore", "because" unless explicitly supported by JSON data).
+* **Defensive Reporting Language**: Prompts mandate qualifiers such as:
+  * *"The dataset suggests..."*
+  * *"The dataset indicates..."*
+  * *"Based on available information..."*
+* **Task-Based Prompting**: Rather than executing raw queries, the `PromptBuilder` translates every query into a structured instruction set (e.g. mapping, comparison, validation tasks) backed by strict data-grounding rules.
 
 ---
 
-## 4. Setup and Installation
+## 4. Concise Response Layout
+
+All conversational answers strictly conform to the following short dashboard format (100–200 words):
+
+1. **📊 Summary**: Exactly one sentence summarizing the core takeaway and decision value.
+2. **📌 Key Metrics**: A short plain text key-value list of 3-5 KPI parameters relevant ONLY to the query.
+3. **🔍 Key Insights**: Maximum 3 bullets, exactly one sentence each, using qualifiers.
+4. **🎯 Recommended Actions**: Maximum 3 bullets, short, action-oriented, referencing exact data codes.
+5. **💡 Suggested Questions**: Maximum 3 follow-up questions dynamically generated.
+6. **✅ Confidence**: A single-line status rating (**High | Medium | Low**) referencing the JSON sections used.
+
+---
+
+## 5. Setup and Installation
 
 ### Step 1: Install Dependencies
 Run the following command in your terminal to install the official Google GenAI SDK and environment loader:
@@ -92,7 +102,7 @@ GEMINI_API_KEY=AIzaSy...your-gemini-api-key
 
 ---
 
-## 5. How to Test the Copilot
+## 6. How to Test the Copilot
 
 Run the CLI application by passing your question as an argument:
 

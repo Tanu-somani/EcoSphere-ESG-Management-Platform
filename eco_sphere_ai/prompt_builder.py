@@ -8,8 +8,8 @@ _logger = logging.getLogger(__name__)
 class PromptBuilder:
     """
     Standalone PromptBuilder loading filesystem templates.
-    Responsible for compiling concise, conversational prompts for the live
-    Executive ESG Copilot, supporting adaptive layouts and strict word limits.
+    Converts user questions into structured tasks with strict execution rules
+    for the Data Analyst LLM.
     """
     def __init__(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -27,27 +27,37 @@ class PromptBuilder:
             _logger.error("Failed to read template: %s", str(e))
             return ""
 
-    def _compile(self, template_name: str, context: dict, question: str) -> tuple:
+    def _compile_task(self, task_description: str, context: dict, question: str) -> tuple:
         system_prompt = self._read_template("system_prompt.txt")
-        template = self._read_template(template_name)
-        
         context_str = json.dumps(context, indent=2)
-        try:
-            user_prompt = template.format(context=context_str, question=question)
-        except Exception as e:
-            _logger.error("Formatting error in template %s: %s", template_name, str(e))
-            user_prompt = f"Context:\n{context_str}\n\nQuestion: {question}"
-            
+        
+        user_prompt = f"""Task:
+{task_description}
+User Query: "{question}"
+
+Context JSON Data:
+{context_str}
+
+Strict Rules:
+1. Use ONLY the provided context values. Do not invent departments, scores, or carbon metrics.
+2. Do NOT assume or claim causal relationships between values unless explicitly stated in the context.
+3. Use cautious language (e.g. "suggests", "indicates", "does not explicitly establish").
+4. If context is missing for any part of the query, list it under "Missing Information".
+"""
         return system_prompt, user_prompt
 
     def build_dashboard_prompt(self, context: dict, question: str) -> tuple:
-        return self._compile("dashboard_summary.txt", context, question)
+        task = "Analyze the organizational dashboard summary metrics. Identify key indicators, values, and status flags."
+        return self._compile_task(task, context, question)
 
     def build_department_prompt(self, context: dict, question: str) -> tuple:
-        return self._compile("department_analysis.txt", context, question)
+        task = "Compare performance scores across departments. Highlight scoring disparities in Environmental, Social, and Governance pillars."
+        return self._compile_task(task, context, question)
 
     def build_recommendation_prompt(self, context: dict, question: str) -> tuple:
-        return self._compile("recommendation.txt", context, question)
+        task = "Formulate priority actions. Recommend specific actions linked strictly to evidence of delay, overdues, or low scores in the data."
+        return self._compile_task(task, context, question)
 
     def build_audit_prompt(self, context: dict, question: str) -> tuple:
-        return self._compile("audit_summary.txt", context, question)
+        task = "Summarize recent audit scores, findings, and list active compliance issues sorted by severity (High, Medium, Low)."
+        return self._compile_task(task, context, question)
