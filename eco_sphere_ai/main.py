@@ -6,8 +6,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-# Load environment variables (.env)
-load_dotenv()
+# Load environment variables (.env) from absolute path
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(dotenv_path=os.path.join(current_dir, '.env'))
 
 # Import the existing AIService
 from ai_service import AIService
@@ -75,7 +77,7 @@ async def ask_copilot(request: ChatRequest):
         
         # Instantiate and invoke the existing orchestrator
         ai_service = AIService()
-        answer = ai_service.get_response(question)
+        answer = ai_service.ask(question)
         
         return ChatResponse(answer=answer)
         
