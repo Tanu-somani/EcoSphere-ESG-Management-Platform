@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface CarbonTransactionRepository extends JpaRepository<CarbonTransaction, Long> {
 
@@ -15,4 +17,6 @@ FROM CarbonTransaction c
 WHERE c.department.id = :departmentId
 """)
     Double getTotalCarbonEmission(@Param("departmentId") Long departmentId);
+
+    Optional<CarbonTransaction> findByDepartmentId(Long departmentId);
 }

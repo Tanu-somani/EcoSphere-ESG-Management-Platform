@@ -9,6 +9,7 @@ import com.odoo.backendegs.entity.esg.DepartmentScore;
 import com.odoo.backendegs.exception.exceptions.ResourceNotFoundException;
 import com.odoo.backendegs.repo.department.DepartmentRepo;
 import com.odoo.backendegs.repo.environmental.CarbonTransactionRepository;
+import com.odoo.backendegs.repo.social.XPTransactionRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,14 +21,17 @@ public class EsgScoreService {
     private final SocialScoreEngine socialScoreEngine;
     private final DepartmentRepo departmentRepo;
     private final CarbonTransactionRepository carbonTransactionRepository;
+    private final XPTransactionRepository xpTransactionRepo;
 
-    public EsgScoreService(EnvironmentalScoreEngine environmentalScoreEngine, GovernanceScoreEngine governanceScoreEngine, OverallScoreEngine overallScoreEngine, SocialScoreEngine socialScoreEngine, DepartmentRepo departmentRepo, CarbonTransactionRepository carbonTransactionRepository) {
+
+    public EsgScoreService(EnvironmentalScoreEngine environmentalScoreEngine, GovernanceScoreEngine governanceScoreEngine, OverallScoreEngine overallScoreEngine, SocialScoreEngine socialScoreEngine, DepartmentRepo departmentRepo, CarbonTransactionRepository carbonTransactionRepository, XPTransactionRepository xpTransactionRepo) {
         this.environmentalScoreEngine = environmentalScoreEngine;
         this.governanceScoreEngine = governanceScoreEngine;
         this.overallScoreEngine = overallScoreEngine;
         this.socialScoreEngine = socialScoreEngine;
         this.departmentRepo = departmentRepo;
         this.carbonTransactionRepository = carbonTransactionRepository;
+        this.xpTransactionRepo = xpTransactionRepo;
     }
 
     public void updateDepartmentScore(Long departmentId){
@@ -47,11 +51,15 @@ public class EsgScoreService {
                 carbonTransactionRepository.getTotalCarbonEmission(departmentId);
 
 
+        Integer totalDepartmentXP =
+                xpTransactionRepo.getTotalDepartmentXP(departmentId);
+
+
         double environmentalScore = environmentalScoreEngine
                 .calculateScore(totalCarbon);
 
         double socialScore =
-                socialScoreEngine.calculateScore();
+                socialScoreEngine.calculateScore(totalDepartmentXP);
 
         double governanceScore =
                 governanceScoreEngine.calculateScore();

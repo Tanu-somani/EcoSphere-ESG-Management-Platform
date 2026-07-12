@@ -16,6 +16,8 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class CarbonTransactionService {
@@ -66,7 +68,7 @@ public class CarbonTransactionService {
 
     }
 
-    CarbonTransactionResponse getResponse(CarbonTransaction saved){
+    private  CarbonTransactionResponse getResponse(CarbonTransaction saved){
 
         CarbonTransactionResponse response = new CarbonTransactionResponse();
 
@@ -81,6 +83,39 @@ public class CarbonTransactionService {
         response.setQuantity(saved.getQuantity());
 
         return response;
+    }
+
+    public CarbonTransactionResponse getCarbonTransaction(Long id){
+
+        CarbonTransaction transaction = carbonTransactionRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Carbon Transaction " + id + " not found"));
+
+        return getResponse(transaction);
+    }
+
+    public List<CarbonTransactionResponse> getAllCarbonTransactions(){
+
+        return carbonTransactionRepository.findAll()
+                .stream()
+                .map(this::getResponse)
+                .toList();
+
+    }
+
+    public List<CarbonTransactionResponse> getDepartmentTransactions(Long departmentId){
+
+        return carbonTransactionRepository.findByDepartmentId(departmentId)
+                .stream()
+                .map(this::getResponse)
+                .toList();
+
+    }
+
+    public Double getDepartmentTotalCarbon(Long departmentId){
+
+        return carbonTransactionRepository.getTotalCarbonEmission(departmentId);
+
     }
 
     private Department getDepartment(Long departmentId){
