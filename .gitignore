@@ -1,3 +1,6 @@
 .idea/
 .env
 **/.env
+eco_sphere_ai/.env
+__pycache__/
+*.pyc
