@@ -1,34 +1,220 @@
-# EcoSphere AI Copilot
+# 🌱 EcoSphere - ESG Management Platform
 
-EcoSphere AI Copilot is an intelligent ESG (Environmental, Social, and Governance) assistant developed for the Odoo Hackathon. Powered by Python and Google's Gemini API, the Copilot assists corporate executives in analyzing sustainability data directly from their dashboard interface. 
+EcoSphere is an ESG (Environmental, Social, and Governance) Management Platform built as an Odoo module for the Odoo Hackathon.
 
-To maintain strict data integrity, the AI Copilot does **not** perform calculations or access database models directly. All carbon footprints, compliance classifications, and scores are processed in advance by the backend. The AI acts exclusively as a reasoning layer, consuming structured context payloads to provide data-driven summaries, performance audits, and actionable recommendations.
-
----
-
-## Features
-
-* **AI-Powered ESG Assistant**: Natural language query interface tailored for executive decision support.
-* **Strict Context Grounding**: Reasoning is constrained strictly to the provided data scope to eliminate hallucinations.
-* **Comprehensive ESG Summarization**: High-level corporate ESG status reports generated on demand.
-* **Carbon footprint Analysis**: Translates raw emissions transactions into actionable carbon assessments.
-* **Department Performance Audits**: Evaluates performance, headcounts, and risk rankings across operational departments.
-* **Goal Progress Tracking**: Monitored tracking of Environmental Goals (e.g. status delays, percentage completions).
-* **Compliance & Risk Monitoring**: Tracks active compliance issues, overdue dates, and severity flags.
-* **Actionable Recommendation Engine**: Directs users toward timed operations tasks (Immediate, This Quarter, Long Term) using context data.
-* **Task-Based Prompt Design**: Maps user queries into structured analyst directives (e.g. comparative ranking, audit profiling).
+The platform helps organizations measure, monitor, and improve their ESG performance by integrating sustainability directly into daily business operations. Instead of manually entering ESG data, EcoSphere transforms business activities into meaningful ESG metrics and provides actionable insights through dashboards, reports, AI, and secure governance workflows.
 
 ---
 
-## Architecture
+# 📖 Problem Statement
 
-The AI Copilot operates as a clean, decoupled service:
+Organizations already use ERP systems like Odoo for:
 
+- Purchasing
+- Manufacturing
+- Fleet Management
+- Human Resources
+- Expenses
+- Inventory
+
+However, these systems do not provide a unified view of an organization's Environmental, Social, and Governance performance.
+
+EcoSphere bridges this gap by collecting operational data, processing it into ESG metrics, and presenting management with real-time sustainability insights.
+
+---
+
+# 🎯 Project Goal
+
+The primary objective of EcoSphere is to:
+
+- Measure ESG performance
+- Monitor sustainability goals
+- Encourage employee participation
+- Improve governance compliance
+- Provide meaningful reports
+- Help management make data-driven sustainability decisions
+
+---
+
+# 🏗️ Core Architecture
+
+```
+Daily Business Operations
+        │
+        ▼
+ EcoSphere Backend Engine
+        │
+        ├──────── Environmental
+        ├──────── Social
+        ├──────── Governance
+        │
+        ▼
+ ESG Score Calculation Engine
+        │
+        ▼
+ Dashboard & Reports
+        │
+   ┌────┴────┐
+   ▼         ▼
+ AI Copilot Blockchain
+```
+
+---
+
+# 🌍 Environmental Module
+
+The Environmental module is responsible for tracking an organization's environmental impact.
+
+### Features
+
+- Emission Factors
+- Carbon Transactions
+- Environmental Goals
+- Department Carbon Tracking
+
+### Example Workflow
+
+```
+Purchase Diesel
+
+↓
+
+Emission Factor
+
+↓
+
+Carbon Calculation
+
+↓
+
+Carbon Transaction Created
+
+↓
+
+Department Environmental Score Updated
+```
+
+---
+
+# 👥 Social Module
+
+The Social module focuses on employee participation and sustainability initiatives.
+
+### Features
+
+- CSR Activities
+- Employee Participation
+- Sustainability Challenges
+- XP System
+- Badges
+- Rewards
+- Leaderboard
+
+### Example Workflow
+
+```
+Employee joins CSR Activity
+
+↓
+
+Uploads Proof
+
+↓
+
+Manager Approves
+
+↓
+
+XP Awarded
+
+↓
+
+Social Score Updated
+
+↓
+
+Leaderboard Updated
+```
+
+---
+
+# 🏛 Governance Module
+
+The Governance module helps organizations monitor compliance and audits.
+
+### Features
+
+- ESG Policies
+- Policy Acknowledgements
+- Audits
+- Compliance Issues
+
+### Example Workflow
+
+```
+Audit Created
+
+↓
+
+Compliance Issues Found
+
+↓
+
+Issue Assigned
+
+↓
+
+Issue Resolved
+
+↓
+
+Governance Score Updated
+```
+
+---
+
+# 📊 ESG Score Engine
+
+EcoSphere revolves around the ESG Score Engine.
+
+Every activity contributes to one of the three ESG pillars.
+
+```
+Environmental Score
+
++
+
+Social Score
+
++
+
+Governance Score
+
+↓
+
+Overall ESG Score
+```
+
+The ESG Score is displayed throughout the platform and forms the basis for reporting and analytics.
+
+---
+
+# 🤖 AI Copilot (REST API & CLI Service)
+
+EcoSphere includes a standalone, decoupled AI Copilot built using Python and Google's Gemini 3.5 Flash API to help management analyze ESG metrics. The AI does **not** perform calculations; instead, it acts as a reasoning layer over structured backend data.
+
+### Features
+* **Interactive Chat Companion**: Pruned layouts optimized for live chat widgets.
+* **Grounded Responses**: Restricts analysis strictly to the provided context to prevent hallucinations.
+* **No Causal Assumptions**: Uses qualitative analyst language ("indicates", "suggests") to ensure reporting standards.
+* **FastAPI Server**: REST API endpoints for easy integration with frontends and external services.
+
+### API Architecture
 ```text
 User Question
       │
       ▼
-   app.py (CLI Entry Point)
+   FastAPI (main.py) / CLI (app.py)
       │
       ▼
 Context Loader ◄───[Reads]─── Mock JSON Context (mock/ai_context.json)
@@ -41,220 +227,227 @@ Prompt Builder ◄───[Reads]─── System Prompt Instructions
       │
       ▼
   Gemini API (Gemini 3.5 Flash Model)
-      │
-      ▼
-   Response
 ```
 
-### Component Breakdown
-* **`app.py`**: The entry point managing the command line user loop and environment initialization.
-* **`context_loader.py`**: Responsible for loading the active structured data state.
-* **`prompt_builder.py`**: Formulates questions into explicit tasks, merging the system instructions and data context.
-* **`gemini_client.py`**: API Gateway wrapping the official Google GenAI Python SDK.
+### Installation & Run
 
----
-
-## Project Structure
-
-```text
-eco_sphere_ai/
-├── app.py                  # CLI executable script and user entry point
-├── ai_service.py           # Core orchestrator service managing pipeline execution
-├── context_router.py       # Intent classifier that prunes context payloads to minimize token size
-├── context_loader.py       # Reads and loads the structured ESG context
-├── prompt_builder.py       # Compiles context data and questions into structured Tasks
-├── gemini_client.py        # Communicates with Google's Gemini API (Gemini 3.5 Flash)
-├── prompts/
-│   └── system_prompt.txt   # Strict Data Analyst system instructions and guardrails
-├── mock/
-│   └── ai_context.json     # Decoupled static JSON contract for offline development
-├── requirements.txt        # Package dependencies (google-genai, python-dotenv)
-└── .env                    # Secure local environment credentials (ignored by Git)
-```
-
----
-
-## How It Works
-
-1. **User Query**: The user asks a question about ESG data.
-2. **Context Resolution**: The `ContextLoader` reads the structured dataset. The AI does not query databases directly, preventing SQL injection or unauthorized access.
-3. **Task-Based Prompt Compilation**: The `PromptBuilder` takes the user question, matches it to an intent, compiles it into a structured task with strict rules, and injects the context JSON.
-4. **API Call**: The `GeminiClient` forwards the compiled prompt and system guidelines to Gemini 3.5 Flash.
-5. **Formated Response**: The generated markdown response is returned to the user interface.
-
----
-
-## Development Mode
-
-During development, the Copilot operates in **Development Mode**, loading the static database contract [mock/ai_context.json](file:///Users/yashvikaushik/Documents/Documents/eco_sphere_ai/EcoSphere-ESG-Management-Platform/eco_sphere_ai/mock/ai_context.json). This allows the frontend and AI teams to iterate on prompts, workflows, and response layouts concurrently without waiting for backend development to complete.
-
----
-
-## Backend Integration
-
-In production, `context_loader.py` is configured to call `GET /api/ai/context` from the backend service instead of reading the mock JSON. Because the API returns the exact same JSON schema as the mock file, no prompt engineering or AI orchestration logic needs to change.
-
-```text
-Backend REST API
-       │
-       ▼
-GET /api/ai/context
-       │
-       ▼
-Context Loader
-       │
-       ▼
-Prompt Builder
-       │
-       ▼
-  Gemini API
-```
-
----
-
-## API Contract
-
-The REST endpoint `GET /api/ai/context` must return a JSON object structured exactly like the development mock contract:
-
-| Section Name | JSON Key | Data Type | Description |
-| :--- | :--- | :---: | :--- |
-| **Organization Summary** | `organization_summary` | Object | Standard company name, industry, and scale details. |
-| **Dashboard Summary** | `dashboard_summary` | Object | Overall ESG rating, score, and core corporate metrics. |
-| **Departments** | `departments` | Array | Department metadata (names, heads, and staff counts). |
-| **Department Scores** | `department_scores` | Array | Dimensional scores (E, S, G) mapped to each department. |
-| **Carbon Transactions** | `carbon_transactions` | Array | Individual Scope 1/2/3 transaction records. |
-| **Environmental Goals** | `environmental_goals` | Array | Targets, target dates, progress ratios, and status values. |
-| **CSR Activities** | `csr_activities` | Array | Budget allocations and impact statistics. |
-| **Employee Participation**| `employee_participation`| Object | Volunteering statistics and active ratios. |
-| **Challenges** | `challenges` | Array | Sustainability challenges, dates, and active flags. |
-| **Challenge Participation**| `challenge_participation`| Object | Completed counts and estimated carbon savings. |
-| **Audits** | `audits` | Array | Auditor names, audit dates, scores, and findings counts. |
-| **Compliance Issues** | `compliance_issues` | Array | Severity level, descriptions, status, and due dates. |
-| **Policies** | `policies` | Array | Policy titles, versions, and revision dates. |
-
----
-
-## Installation
-
-### 1. Clone the Repository
+Navigate to the `eco_sphere_ai` directory and configure the environment:
 ```bash
-git clone https://github.com/Tanu-somani/EcoSphere-ESG-Management-Platform.git
-cd EcoSphere-ESG-Management-Platform/eco_sphere_ai
-```
-
-### 2. Create Virtual Environment & Install Dependencies
-```bash
+cd eco_sphere_ai
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
----
-
-## Environment Variables
-
-Create a `.env` file in the `eco_sphere_ai` directory to manage your Gemini API credentials safely:
-
+Create a `.env` file inside `eco_sphere_ai/`:
 ```env
-GEMINI_API_KEY=your_actual_gemini_api_key
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
----
+#### Run as a REST API Server (Uvicorn / FastAPI):
+```bash
+uvicorn main:app --port 8000 --reload
+```
+* **Swagger UI Docs**: Accessible at `http://localhost:8000/docs`.
+* **Health Check**: `GET http://localhost:8000/health`
+* **Chat Endpoint**: `POST http://localhost:8000/api/ai/chat` taking `{"question": "..."}`.
 
-## Running the Copilot
-
-### Option A: Run as a CLI Client
-Run queries directly from your CLI terminal:
+#### Run as a CLI Application:
 ```bash
 python3 app.py "What is our overall ESG score?"
 ```
 
-### Option B: Run as a HTTP API Server
-Start the built-in HTTP server on a port (defaults to `8000`):
-```bash
-python3 server.py 8000
+### Example Questions
+* *What is our overall ESG score?*
+* *Explain Manufacturing department performance.*
+* *Compare Manufacturing with Logistics.*
+* *Which compliance issue is most critical?*
+* *Show delayed environmental goals.*
+
+---
+
+# ⛓️ Blockchain (MVP)
+
+Blockchain is used only for Governance.
+
+When an audit is completed:
+
 ```
-Query the server via POST requests:
-```bash
-curl -X POST http://localhost:8000/api/chat \
-  -H "Content-Type: application/json" \
-  -d '{"question": "What is our overall ESG score?"}'
+Audit Completed
+
+↓
+
+Generate SHA-256 Hash
+
+↓
+
+Store Hash on Blockchain
+
+↓
+
+Receive Transaction Hash
+
+↓
+
+Save Transaction Hash
 ```
 
----
-
-## Example Questions
-
-### Dashboard summaries
-1. *What is our overall ESG score?*
-2. *Show our current ESG rating.*
-3. *Provide an executive summary of our dashboard.*
-
-### Departmental Performance
-4. *Explain Manufacturing department performance.*
-5. *Compare Manufacturing with Logistics.*
-6. *Which department has the lowest Environmental score?*
-7. *Who leads the Corporate Administration department and how are they performing?*
-
-### Carbon footprint & Goals
-8. *Summarize our carbon footprint.*
-9. *What is our total CO2 emissions count?*
-10. *Show all delayed environmental goals.*
-11. *What is our progress on GOAL-003?*
-12. *Detail our Scope 1 vs. Scope 3 emissions.*
-
-### Audits & Compliance
-13. *Which compliance issue is most critical?*
-14. *Are there any overdue compliance violations?*
-15. *Summarize our Q1 environmental audit findings.*
-16. *Who audited our compliance status on 2026-03-22?*
-
-### Strategic Actions & CSR
-17. *What should management prioritize immediately?*
-18. *Recommend ESG improvements based on our scores.*
-19. *What is the budget allocation for CSR reforestation?*
-20. *How much carbon did we save from challenges?*
+This provides immutable proof that completed audits have not been modified.
 
 ---
 
-## AI Design Principles
+# 📈 Dashboard
 
-* **Grounded AI**: The model acts strictly on the provided context, preventing hallucinations.
-* **Decoupled Architecture**: Calculations remain on the Odoo backend; the AI functions only as a translator and analyst.
-* **No Direct DB Access**: Keeps database transactions isolated and secure.
-* **Task-Based Restructuring**: All inputs are wrapped in structured commands to ensure programmatic consistency in responses.
-* **Qualitative Analysis**: Uses neutral qualifiers ("suggests", "indicates") to maintain analysis standards.
+The Dashboard provides a centralized view of the organization's ESG performance.
 
----
+### Displays
 
-## Current Limitations
-
-* **Mock Payload Dependency**: Currently relies on filesystem JSON for testing until the backend endpoint goes live.
-* **Stateless Conversations**: Does not maintain conversation memory threads between independent executions.
-* **No Response Streaming**: Returns the complete response block at once without character streaming.
-* **No Built-in Authentication**: Relies on host environment authorization.
-
----
-
-## Future Improvements
-
-* **Production Endpoint Switch**: Connect to live Odoo backend APIs.
-* **Conversation History**: Integrate in-memory or database thread logging.
-* **Streaming Responses**: Enable token streaming for UI chat widgets.
-* **RAG (Retrieval-Augmented Generation)**: Allow searching policy documents dynamically.
-* **Voice Assistant**: Integrate speech-to-text input pipelines.
+- Overall ESG Score
+- Environmental Score
+- Social Score
+- Governance Score
+- Carbon Trends
+- Department Rankings
+- Recent Activities
+- Active Challenges
+- Pending Audits
 
 ---
 
-## Tech Stack
+# 📄 Reports
 
-* **Language**: Python 3.12+
-* **AI Model**: Google Gemini 3.5 Flash
-* **SDK**: Official Google GenAI Python SDK
-* **Data Format**: Structured JSON
+The platform supports generation of:
+
+- Environmental Report
+- Social Report
+- Governance Report
+- ESG Summary Report
+- Custom Report Builder
+
+Reports can be filtered by:
+
+- Department
+- Employee
+- Date Range
+- Challenge
+- ESG Category
 
 ---
 
-## Authors
+# ⚙️ Core Technologies
+
+- Odoo
+- Python
+- PostgreSQL
+- Blockchain (Audit Verification)
+- AI Copilot (FastAPI / Gemini)
+- JavaScript
+- XML Views
+
+---
+
+# 👥 Team Responsibilities
+
+## Backend
+
+Responsible for:
+
+- Domain Models
+- Business Logic
+- Carbon Calculation Engine
+- ESG Score Engine
+- Report Generation
+- AI Context Preparation
+- Blockchain Integration
+
+---
+
+## AI
+
+Responsible for:
+
+- ESG Copilot REST API
+- Grounded prompt engineering
+- Real-time department insights & recommendations
+- Exposing Uvicorn HTTP endpoints for frontend consumption
+
+---
+
+## Frontend
+
+Responsible for:
+
+- Dashboard
+- User Interface
+- Forms
+- Charts
+- Reports
+- User Experience
+
+---
+
+## Blockchain
+
+Responsible for:
+
+- Audit Hash Storage
+- Audit Verification
+- Smart Contract
+- Transaction Hash Generation
+
+---
+
+# 🚀 Future Scope
+
+Possible future enhancements include:
+
+- Carbon Credit Marketplace
+- ESG Prediction Engine
+- IoT Sensor Integration
+- Automated Sustainability Recommendations
+- Mobile Application
+- Multi-Organization Support
+
+---
+
+# 📌 Project Philosophy
+
+EcoSphere is not a traditional CRUD application.
+
+Instead, it is an event-driven ESG processing platform.
+
+```
+Business Activity
+
+↓
+
+ESG Processing
+
+↓
+
+Department Score
+
+↓
+
+Organization Score
+
+↓
+
+Dashboard
+
+↓
+
+Reports
+
+↓
+
+AI Insights
+```
+
+Every feature in the platform ultimately contributes toward helping organizations become more sustainable and make better ESG decisions.
+
+---
+
+# 👥 Authors
 
 * **AI Lead & Solutions Architect**: *[Yashvi Kaushik]*
