@@ -11,7 +11,7 @@ import com.odoo.backendegs.exception.exceptions.ResourceNotFoundException;
 import com.odoo.backendegs.repo.department.DepartmentRepo;
 import com.odoo.backendegs.repo.environmental.CarbonTransactionRepository;
 import com.odoo.backendegs.repo.environmental.ResourceRepo;
-import com.odoo.backendegs.service.esg.EsgService;
+import com.odoo.backendegs.service.esg.EsgScoreService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -25,15 +25,15 @@ public class CarbonTransactionService {
     private final ResourceRepo resourceRepo;
     private final DepartmentRepo departmentRepo;
     private final ModelMapper modelMapper;
-    private final EsgService esgService;
+    private final EsgScoreService esgScoreService;
 
-    public CarbonTransactionService(CarbonCalculationEngine carbonCalculationEngine, CarbonTransactionRepository carbonTransactionRepository, ResourceRepo resourceRepo, DepartmentRepo departmentRepo, ModelMapper modelMapper, EsgService esgService) {
+    public CarbonTransactionService(CarbonCalculationEngine carbonCalculationEngine, CarbonTransactionRepository carbonTransactionRepository, ResourceRepo resourceRepo, DepartmentRepo departmentRepo, ModelMapper modelMapper, EsgScoreService esgScoreService) {
         this.carbonCalculationEngine = carbonCalculationEngine;
         this.carbonTransactionRepository = carbonTransactionRepository;
         this.resourceRepo = resourceRepo;
         this.departmentRepo = departmentRepo;
         this.modelMapper = modelMapper;
-        this.esgService = esgService;
+        this.esgScoreService = esgScoreService;
     }
 
 
@@ -59,7 +59,7 @@ public class CarbonTransactionService {
         CarbonTransaction saved = carbonTransactionRepository.save(mapped);
 
 
-        esgService.updateDepartmentScore(departmentId);
+        esgScoreService.updateDepartmentScore(departmentId);
 
         return getResponse(saved);
 

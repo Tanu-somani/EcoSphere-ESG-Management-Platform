@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Table(name = "CarbonTransaction")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
