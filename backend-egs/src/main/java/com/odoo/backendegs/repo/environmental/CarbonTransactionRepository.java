@@ -1,9 +1,9 @@
 package com.odoo.backendegs.repo.environmental;
 
-import com.odoo.backendegs.entity.environmental.Resource;
+import com.odoo.backendegs.entity.environmental.CarbonTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ResourceRepo extends JpaRepository<Resource, Long> {
+public interface CarbonTransactionRepository extends JpaRepository<CarbonTransaction, Long> {
 }

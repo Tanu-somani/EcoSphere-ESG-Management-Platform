@@ -31,7 +31,6 @@ public class Resource {
 
     private String description;
 
-    @OneToMany(mappedBy = "resource")
-    @Builder.Default
-    private List<EmissionFactor> emissionFactors = new ArrayList<>();
+    @OneToOne(mappedBy = "resource", cascade = CascadeType.ALL)
+    private EmissionFactor emissionFactor;
 }

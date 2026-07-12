@@ -1,6 +1,6 @@
 package com.odoo.backendegs.entity.department;
 
-import com.odoo.backendegs.entity.environmental.DepartmentScore;
+import com.odoo.backendegs.entity.esg.DepartmentScore;
 import jakarta.persistence.*;
 import lombok.*;
 

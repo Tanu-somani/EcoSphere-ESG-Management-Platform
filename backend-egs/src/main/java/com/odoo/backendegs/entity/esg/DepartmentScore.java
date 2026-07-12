@@ -1,4 +1,4 @@
-package com.odoo.backendegs.entity.environmental;
+package com.odoo.backendegs.entity.esg;
 
 import com.odoo.backendegs.entity.department.Department;
 import jakarta.persistence.*;

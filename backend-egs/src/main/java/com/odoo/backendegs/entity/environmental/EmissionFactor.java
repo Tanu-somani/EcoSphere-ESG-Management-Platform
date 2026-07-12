@@ -32,7 +32,7 @@ public class EmissionFactor extends BaseSuperClass {
 
     private LocalDate effectiveTo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "resource_id")
     private Resource resource;
 }
