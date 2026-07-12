@@ -245,4 +245,4 @@ python3 app.py "What is our overall ESG score?"
 
 ## Authors
 
-* **AI Lead & Solutions Architect**: *[Your Name / Team Placeholders]*
+* **AI Lead & Solutions Architect**: *[Yashvi Kaushik]*
