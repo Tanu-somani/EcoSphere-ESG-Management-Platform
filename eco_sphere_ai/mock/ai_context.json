@@ -1,0 +1,186 @@
+{
+  "organization_summary": {
+    "name": "EcoSphere Corp",
+    "industry": "Manufacturing & Logistics",
+    "employees": 1250,
+    "headquarters": "Chicago, IL"
+  },
+  "dashboard_summary": {
+    "overall_esg_score": 72.5,
+    "esg_rating": "BBB",
+    "carbon_intensity_ratio": 4.2,
+    "total_co2_emissions_t": 12450.8,
+    "renewable_energy_share_percent": 32.0,
+    "water_recycling_rate_percent": 68.5,
+    "csr_budget_spent_percent": 74.0,
+    "compliance_status": "Attention Required"
+  },
+  "departments": [
+    {
+      "name": "Manufacturing",
+      "head": "Sarah Jenkins",
+      "employees": 850
+    },
+    {
+      "name": "Logistics",
+      "head": "Marcus Vance",
+      "employees": 250
+    },
+    {
+      "name": "Corporate Administration",
+      "head": "Elena Rostova",
+      "employees": 150
+    }
+  ],
+  "department_scores": [
+    {
+      "department": "Manufacturing",
+      "environmental_score": 58.0,
+      "social_score": 75.0,
+      "governance_score": 70.0,
+      "overall_score": 67.7
+    },
+    {
+      "department": "Logistics",
+      "environmental_score": 64.0,
+      "social_score": 82.0,
+      "governance_score": 80.0,
+      "overall_score": 75.3
+    },
+    {
+      "department": "Corporate Administration",
+      "environmental_score": 88.0,
+      "social_score": 90.0,
+      "governance_score": 95.0,
+      "overall_score": 91.0
+    }
+  ],
+  "carbon_transactions": [
+    {
+      "id": "TXN-2026-001",
+      "date": "2026-01-15",
+      "category": "Scope 1 (Direct)",
+      "source": "Natural Gas Combustion - Boiler Plant A",
+      "co2_equivalent_t": 145.2
+    },
+    {
+      "id": "TXN-2026-002",
+      "date": "2026-02-10",
+      "category": "Scope 2 (Indirect)",
+      "source": "Electricity Consumption - Production Line 2",
+      "co2_equivalent_t": 310.5
+    },
+    {
+      "id": "TXN-2026-003",
+      "date": "2026-03-01",
+      "category": "Scope 3 (Supply Chain)",
+      "source": "Outbound Freight - Third-party Trucking",
+      "co2_equivalent_t": 580.0
+    }
+  ],
+  "environmental_goals": [
+    {
+      "id": "GOAL-001",
+      "title": "Zero Waste to Landfill",
+      "target_date": "2028-12-31",
+      "current_progress_percent": 82.0,
+      "status": "On Track"
+    },
+    {
+      "id": "GOAL-002",
+      "title": "Reduce Scope 1 Emissions by 20%",
+      "target_date": "2027-06-30",
+      "current_progress_percent": 45.0,
+      "status": "Delayed"
+    },
+    {
+      "id": "GOAL-003",
+      "title": "100% Renewable Energy sourcing",
+      "target_date": "2030-12-31",
+      "current_progress_percent": 32.0,
+      "status": "On Track"
+    }
+  ],
+  "csr_activities": [
+    {
+      "id": "CSR-2026-A",
+      "title": "Urban Reforestation Drive",
+      "budget_allocated": 25000,
+      "budget_spent": 24500,
+      "impact_metric": "500 trees planted in metropolitan parks"
+    },
+    {
+      "id": "CSR-2026-B",
+      "title": "Community STEM Mentorship",
+      "budget_allocated": 15000,
+      "budget_spent": 10500,
+      "impact_metric": "120 student hours completed"
+    }
+  ],
+  "employee_participation": {
+    "volunteer_hours_logged": 1420,
+    "active_volunteer_ratio_percent": 38.5,
+    "top_participating_department": "Corporate Administration"
+  },
+  "challenges": [
+    {
+      "id": "CHALLENGE-1",
+      "title": "Paperless Office Month",
+      "start_date": "2026-04-01",
+      "end_date": "2026-04-30",
+      "status": "Active"
+    },
+    {
+      "id": "CHALLENGE-2",
+      "title": "Car-Free Commute Week",
+      "start_date": "2026-05-12",
+      "end_date": "2026-05-19",
+      "status": "Scheduled"
+    }
+  ],
+  "challenge_participation": {
+    "total_participants": 480,
+    "carbon_saved_kg": 1250.0,
+    "completion_rate_percent": 76.2
+  },
+  "audits": [
+    {
+      "id": "AUDIT-2026-Q1",
+      "type": "Environmental Compliance Audit",
+      "auditor": "EcoVeritas Assurance Ltd",
+      "date": "2026-03-22",
+      "score": 84.0,
+      "findings_count": 3
+    }
+  ],
+  "compliance_issues": [
+    {
+      "id": "COMP-001",
+      "severity": "Medium",
+      "description": "Inadequate hazardous waste labeling at Production Plant B",
+      "due_date": "2026-08-30",
+      "status": "Pending"
+    },
+    {
+      "id": "COMP-002",
+      "severity": "High",
+      "description": "Water discharge pH level minor exceedance (Boiler Plant A)",
+      "due_date": "2026-07-25",
+      "status": "Overdue"
+    }
+  ],
+  "policies": [
+    {
+      "id": "POLICY-ENV-01",
+      "title": "Green Sourcing Policy",
+      "revision_date": "2025-11-10",
+      "version": "2.1"
+    },
+    {
+      "id": "POLICY-SOC-02",
+      "title": "Employee Diversity & Inclusion Guidelines",
+      "revision_date": "2024-05-15",
+      "version": "1.0"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+You are summarizing the ESG Dashboard Metrics.
+Here is the organization's current ESG context data:
+{context}
+
+Analyze the overall dashboard parameters and address the user's request:
+"{question}"
+
+Follow the response structure specified in your system instructions. Focus on:
+- Explaining the current overall score, rating, carbon intensity, and renewable share.
+- Highlighting compliance concerns and linking them to specific departments if possible.
+- Recommending actions to get delayed goals back on track.

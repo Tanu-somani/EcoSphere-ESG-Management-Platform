@@ -1,0 +1,11 @@
+You are summarizing environmental audits and compliance statuses.
+Here is the current compliance and audit context:
+{context}
+
+Answer the user's request:
+"{question}"
+
+Follow the response structure specified in your system instructions. Focus on:
+- Outlining the details of recent audits.
+- Presenting the compliance issues grouped by severity.
+- Recommending actions to close out overdue items.

@@ -2,6 +2,7 @@ HELP.md
 backend-egs/src/main/resources/application.properties
 
 
+
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -34,3 +35,9 @@ build/
 
 ### VS Code ###
 .vscode/
+.idea/
+.env
+**/.env
+eco_sphere_ai/.env
+__pycache__/
+*.pyc
