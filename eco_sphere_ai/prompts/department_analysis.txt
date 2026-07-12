@@ -1,0 +1,11 @@
+You are performing a Department Performance Analysis.
+Here is the ESG context data:
+{context}
+
+Analyze the department-specific ESG metrics and answer the user's request:
+"{question}"
+
+Follow the response structure specified in your system instructions. Focus on:
+- Contrasting the scores (E, S, G, and Overall) of the departments in a Markdown table.
+- Diagnosing why departments are lagging, connecting low environmental scores to carbon transactions or compliance failures.
+- Suggestions to raise performance in the weakest departments.

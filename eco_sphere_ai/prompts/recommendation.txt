@@ -1,0 +1,11 @@
+You are generating ESG improvement recommendations.
+Here is the organization's current ESG context:
+{context}
+
+Address the user's request:
+"{question}"
+
+Follow the response structure specified in your system instructions. Focus on:
+- Diagnosing the key weaknesses (e.g. low environmental score, delayed carbon goals, overdue compliance items).
+- Detailing precise short, mid, and long-term recommendations with exact metrics (e.g. goal IDs, target dates).
+- Calling out missing context that would help form a better roadmap.
