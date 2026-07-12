@@ -163,10 +163,22 @@ GEMINI_API_KEY=your_actual_gemini_api_key
 
 ## Running the Copilot
 
+### Option A: Run as a CLI Client
 Run queries directly from your CLI terminal:
-
 ```bash
 python3 app.py "What is our overall ESG score?"
+```
+
+### Option B: Run as a HTTP API Server
+Start the built-in HTTP server on a port (defaults to `8000`):
+```bash
+python3 server.py 8000
+```
+Query the server via POST requests:
+```bash
+curl -X POST http://localhost:8000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What is our overall ESG score?"}'
 ```
 
 ---
