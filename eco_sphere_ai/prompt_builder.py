@@ -8,6 +8,8 @@ _logger = logging.getLogger(__name__)
 class PromptBuilder:
     """
     Standalone PromptBuilder loading filesystem templates.
+    Responsible for passing pruned context payloads to specialized templates,
+    enforcing direct context mapping for the Executive ESG Copilot.
     """
     def __init__(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
