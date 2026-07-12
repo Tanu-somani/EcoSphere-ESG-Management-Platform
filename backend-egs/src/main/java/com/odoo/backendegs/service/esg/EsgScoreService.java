@@ -1,82 +1,40 @@
 package com.odoo.backendegs.service.esg;
 
-import com.odoo.backendegs.engine.EnvironmentalScoreEngine;
-import com.odoo.backendegs.engine.GovernanceScoreEngine;
 import com.odoo.backendegs.engine.OverallScoreEngine;
-import com.odoo.backendegs.engine.SocialScoreEngine;
-import com.odoo.backendegs.entity.department.Department;
 import com.odoo.backendegs.entity.esg.DepartmentScore;
 import com.odoo.backendegs.exception.exceptions.ResourceNotFoundException;
-import com.odoo.backendegs.repo.department.DepartmentRepo;
-import com.odoo.backendegs.repo.environmental.CarbonTransactionRepository;
-import com.odoo.backendegs.repo.social.XPTransactionRepository;
+import com.odoo.backendegs.repo.environmental.DepartmentScoreRepo;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EsgScoreService {
 
-    private final EnvironmentalScoreEngine environmentalScoreEngine;
-    private final GovernanceScoreEngine governanceScoreEngine;
+    private final DepartmentScoreRepo departmentScoreRepo;
     private final OverallScoreEngine overallScoreEngine;
-    private final SocialScoreEngine socialScoreEngine;
-    private final DepartmentRepo departmentRepo;
-    private final CarbonTransactionRepository carbonTransactionRepository;
-    private final XPTransactionRepository xpTransactionRepo;
 
+    public EsgScoreService(DepartmentScoreRepo departmentScoreRepo,
+                           OverallScoreEngine overallScoreEngine) {
 
-    public EsgScoreService(EnvironmentalScoreEngine environmentalScoreEngine, GovernanceScoreEngine governanceScoreEngine, OverallScoreEngine overallScoreEngine, SocialScoreEngine socialScoreEngine, DepartmentRepo departmentRepo, CarbonTransactionRepository carbonTransactionRepository, XPTransactionRepository xpTransactionRepo) {
-        this.environmentalScoreEngine = environmentalScoreEngine;
-        this.governanceScoreEngine = governanceScoreEngine;
+        this.departmentScoreRepo = departmentScoreRepo;
         this.overallScoreEngine = overallScoreEngine;
-        this.socialScoreEngine = socialScoreEngine;
-        this.departmentRepo = departmentRepo;
-        this.carbonTransactionRepository = carbonTransactionRepository;
-        this.xpTransactionRepo = xpTransactionRepo;
     }
 
-    public void updateDepartmentScore(Long departmentId){
+    public void updateDepartmentScore(Long departmentId) {
 
-        Department department = departmentRepo.findById(departmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Department " + departmentId + " not found"));
-
-        DepartmentScore departmentScore = department.getDepartmentScore();
-
-        if ( departmentScore == null){
-
-            departmentScore = new DepartmentScore();
-
-        }
-
-        Double totalCarbon =
-                carbonTransactionRepository.getTotalCarbonEmission(departmentId);
-
-
-        Integer totalDepartmentXP =
-                xpTransactionRepo.getTotalDepartmentXP(departmentId);
-
-
-        double environmentalScore = environmentalScoreEngine
-                .calculateScore(totalCarbon);
-
-        double socialScore =
-                socialScoreEngine.calculateScore(totalDepartmentXP);
-
-        double governanceScore =
-                governanceScoreEngine.calculateScore();
+        DepartmentScore departmentScore = departmentScoreRepo
+                .findByDepartmentId(departmentId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Department Score not found"));
 
         double overallScore =
                 overallScoreEngine.calculateOverallScore(
-                        environmentalScore,
-                        socialScore,
-                        governanceScore
+                        departmentScore.getEnvironmentScore(),
+                        departmentScore.getSocialScore(),
+                        departmentScore.getGovernanceScore()
                 );
 
-        departmentScore.setEnvironmentScore(environmentalScore);
-        departmentScore.setSocialScore(socialScore);
-        departmentScore.setGovernanceScore(governanceScore);
         departmentScore.setOverallScore(overallScore);
 
-        departmentRepo.save(department);
+        departmentScoreRepo.save(departmentScore);
     }
-
 }

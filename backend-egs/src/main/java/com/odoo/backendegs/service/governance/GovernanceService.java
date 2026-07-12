@@ -2,6 +2,7 @@ package com.odoo.backendegs.service.governance;
 
 import com.odoo.backendegs.engine.GovernanceScoreEngine;
 import com.odoo.backendegs.entity.esg.DepartmentScore;
+import com.odoo.backendegs.exception.exceptions.ResourceNotFoundException;
 import com.odoo.backendegs.repo.environmental.DepartmentScoreRepo;
 import com.odoo.backendegs.repo.governance.ComplianceIssueRepository;
 import com.odoo.backendegs.service.esg.EsgScoreService;
@@ -26,23 +27,25 @@ public class GovernanceService {
         this.governanceScoreEngine = governanceScoreEngine;
         this.esgScoreService = esgScoreService;
     }
-
     public void updateDepartmentGovernanceScore(Long departmentId) {
 
         Integer openIssues =
                 complianceIssueRepository.getOpenIssues(departmentId);
+
+        if (openIssues == null) {
+            openIssues = 0;
+        }
 
         double governanceScore =
                 governanceScoreEngine.calculateScore(openIssues);
 
         DepartmentScore departmentScore =
                 departmentScoreRepo.findByDepartmentId(departmentId)
-                        .orElseThrow();
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException("Department Score not found"));
 
         departmentScore.setGovernanceScore(governanceScore);
 
         departmentScoreRepo.save(departmentScore);
-
-        esgScoreService.updateDepartmentScore(departmentId);
     }
 }
